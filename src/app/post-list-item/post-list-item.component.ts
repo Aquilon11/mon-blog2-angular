@@ -1,15 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core'
-import { Post } from '../post'
+import { Component, Input } from '@angular/core'
+import { PostService } from '../services/post.service'
 @Component({
   selector: 'app-post-list-item',
   templateUrl: './post-list-item.component.html',
   styleUrls: ['./post-list-item.component.scss'],
 })
-export class PostListItemComponent implements OnInit {
+export class PostListItemComponent {
   @Input()
-  item: Post
+  item
+  @Input()
+  index: number
 
-  constructor() {}
+  constructor(private postService: PostService) {}
 
-  ngOnInit() {}
+  loveIts() {
+    this.postService.loveIts(this.index)
+  }
+
+  dontLoveIts() {
+    this.postService.dontLoveIts(this.index)
+  }
+
+  getColor(i: number) {
+    if (this.item.loveIts > 0) {
+      return 'green'
+    } else if (this.item.loveIts < 0) {
+      return 'red'
+    } else return 'black'
+  }
 }
