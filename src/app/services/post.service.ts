@@ -51,10 +51,15 @@ export class PostService {
     this.emitPostSubject()
   }
 
-  getAppareilById(id: number) {
-    const appareil = this.posts.find(s => {
+  supprimerPost(i: number) {
+    this.posts.splice(i, 1)
+    this.emitPostSubject()
+  }
+
+  getPostById(id: number) {
+    const post = this.posts.find(s => {
       return s.id === id
     })
-    return appareil
+    return post
   }
 }

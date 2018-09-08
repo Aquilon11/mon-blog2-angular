@@ -21,6 +21,12 @@ export class PostListItemComponent {
     this.postService.dontLoveIts(this.index)
   }
 
+  supprimerPost() {
+    if (confirm('Etes-vous sûr de vouloir supprimer ce post ?')) {
+      this.postService.supprimerPost(this.index)
+    }
+  }
+
   getColor(i: number) {
     if (this.item.loveIts > 0) {
       return 'green'
