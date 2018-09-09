@@ -20,6 +20,10 @@ export class PostListComponent implements OnInit {
         this.posts = posts
       }
     )
-    this.postService.emitPostSubject()
+    this.postService.emitPosts()
+  }
+
+  ngOnDestroy() {
+    this.postsSubscription.unsubscribe()
   }
 }

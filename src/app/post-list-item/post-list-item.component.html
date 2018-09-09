@@ -1,25 +1,23 @@
 <li [ngClass]="{'list-group-item': true,
                 'list-group-item-success': item.loveIts > 0,
                 'list-group-item-danger': item.loveIts < 0}">
-  <div [ngStyle]="{color: getColor()}">
-    <div class="text-right">
-      <small class="text-muted">{{item.created_at | date: 'short'}}</small>
-    </div>
-    <h2>
+  <div>
+    <h2 [ngStyle]="{color: getColor()}">
       {{item.title}}<small class="text-muted"> ({{item.loveIts}})</small>
     </h2>
-    <div>{{item.content}}</div>
-    <div class="row">
-      <div class="col-xs-2">
-        <button class="btn btn-success" (click)="loveIts()">Love it</button>
-      </div>
-      <div class="col-xs-2">
-        <button class="btn btn-danger" (click)="dontLoveIts()">Don't love it</button>
-      </div>
-      <div class="col-xs-5"></div>
-      <div class="col-xs-3">
-        <button class="btn btn-danger" (click)="supprimerPost()">Supprimer post</button>
-      </div>
+    <small class="text-muted">Publié le : {{item.created_at}}</small>
+  </div>
+  <div>{{item.content}}</div>
+  <div class="row">
+    <div class="col-xs-2">
+      <button class="btn btn-success" (click)="loveIts()">Love it</button>
+    </div>
+    <div class="col-xs-2">
+      <button class="btn btn-danger" (click)="dontLoveIts()">Don't love it</button>
+    </div>
+    <div class="col-xs-5"></div>
+    <div class="col-xs-3">
+      <button class="btn btn-danger" (click)="supprimerPost()">Supprimer post</button>
     </div>
   </div>
 </li>

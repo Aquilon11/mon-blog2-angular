@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 
 import { AppComponent } from './app.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { HttpClientModule } from '@angular/common/http'
 import { PostListComponent } from './post-list/post-list.component'
 import { PostListItemComponent } from './post-list-item/post-list-item.component'
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component'
@@ -28,7 +30,13 @@ const appRoutes: Routes = [
     FourOhFourComponent,
     NewPostComponent,
   ],
-  imports: [BrowserModule, RouterModule.forRoot(appRoutes)],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
+  ],
   providers: [PostService],
   bootstrap: [AppComponent],
 })

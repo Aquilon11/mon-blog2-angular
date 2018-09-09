@@ -1,65 +1,62 @@
 import { Subject } from 'rxjs'
 import { Injectable } from '@angular/core'
+import { Post } from '../models/Post.model'
+import * as firebase from 'firebase'
+import { DataSnapshot } from '@firebase/database-types'
 
 @Injectable()
 export class PostService {
-  postsSubject = new Subject<any[]>()
+  posts: Post[] = []
+  postsSubject = new Subject<Post[]>()
 
-  posts = [
-    {
-      id: 0,
-      title: 'Mon premier poste',
-      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
-      adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.`,
-      loveIts: 0,
-      created_at: new Date(Date.now()),
-    },
-    {
-      id: 1,
-      title: 'Mon deuxième poste',
-      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
-        adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.`,
-      loveIts: 0,
-      created_at: new Date(Date.now()),
-    },
-    {
-      id: 2,
-      title: 'Encore un poste',
-      content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
-        adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.`,
-      loveIts: 0,
-      created_at: new Date(Date.now()),
-    },
-  ]
+  constructor() {
+    this.getPosts()
+  }
 
-  constructor() {}
-
-  emitPostSubject() {
+  emitPosts() {
+    this.posts.sort((a, b) => b.loveIts - a.loveIts)
     this.postsSubject.next(this.posts.slice())
+  }
+
+  savePosts() {
+    firebase
+      .database()
+      .ref('/posts')
+      .set(this.posts)
+  }
+
+  getPosts() {
+    firebase
+      .database()
+      .ref('/posts')
+      .on('value', (data: DataSnapshot) => {
+        this.posts = data.val() ? data.val() : []
+        this.emitPosts()
+      })
   }
 
   loveIts(i: number) {
     this.posts[i].loveIts++
-    this.emitPostSubject()
+    this.savePosts()
+    this.emitPosts()
   }
 
   dontLoveIts(i: number) {
     this.posts[i].loveIts--
-    this.emitPostSubject()
+    this.savePosts()
+    this.emitPosts()
   }
 
   supprimerPost(i: number) {
     this.posts.splice(i, 1)
-    this.emitPostSubject()
+    this.savePosts()
+    this.emitPosts()
   }
 
-  getPostById(id: number) {
-    const post = this.posts.find(s => {
-      return s.id === id
-    })
-    return post
+  addPost(newPost: Post) {
+    this.posts.push(newPost)
+    console.log(newPost)
+    this.savePosts()
+    this.emitPosts()
   }
 }
